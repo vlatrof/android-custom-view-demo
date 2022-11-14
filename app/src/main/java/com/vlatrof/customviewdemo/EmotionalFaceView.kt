@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import kotlin.math.min
@@ -22,7 +24,7 @@ class EmotionalFaceView(context: Context, attrs: AttributeSet) : View(context, a
     private var borderColor = BORDER_COLOR_DEFAULT
     private var borderWidth = BORDER_WIDTH_DEFAULT
 
-    private var happinessState = HAPPINESS_STATE_DEFAULT
+    var happinessState = HAPPINESS_STATE_DEFAULT
         set(state) {
             field = state
             invalidate()
@@ -42,17 +44,34 @@ class EmotionalFaceView(context: Context, attrs: AttributeSet) : View(context, a
         )
 
         happinessState = typedArray.getInt(
-            R.styleable.EmotionalFaceView_happinessState, HAPPINESS_STATE_DEFAULT.toInt()).toLong()
+            R.styleable.EmotionalFaceView_happinessState,
+            HAPPINESS_STATE_DEFAULT.toInt()
+        ).toLong()
+
         faceColor = typedArray.getColor(
-            R.styleable.EmotionalFaceView_faceColor, FACE_COLOR_DEFAULT)
+            R.styleable.EmotionalFaceView_faceColor,
+            FACE_COLOR_DEFAULT
+        )
+
         eyesColor = typedArray.getColor(
-            R.styleable.EmotionalFaceView_eyesColor, EYES_COLOR_DEFAULT)
+            R.styleable.EmotionalFaceView_eyesColor,
+            EYES_COLOR_DEFAULT
+        )
+
         mouthColor = typedArray.getColor(
-            R.styleable.EmotionalFaceView_mouthColor, MOUTH_COLOR_DEFAULT)
+            R.styleable.EmotionalFaceView_mouthColor,
+            MOUTH_COLOR_DEFAULT
+        )
+
         borderColor = typedArray.getColor(
-            R.styleable.EmotionalFaceView_borderColor, BORDER_COLOR_DEFAULT)
+            R.styleable.EmotionalFaceView_borderColor,
+            BORDER_COLOR_DEFAULT
+        )
+
         borderWidth = typedArray.getDimension(
-            R.styleable.EmotionalFaceView_borderWidth, BORDER_WIDTH_DEFAULT)
+            R.styleable.EmotionalFaceView_borderWidth,
+            BORDER_WIDTH_DEFAULT
+        )
 
         typedArray.recycle()
     }
@@ -117,6 +136,22 @@ class EmotionalFaceView(context: Context, attrs: AttributeSet) : View(context, a
         paint.color = mouthColor
         paint.style = Paint.Style.FILL
         canvas.drawPath(mouthPath, paint)
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putLong("happinessState", happinessState)
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        var viewState = state
+        if (viewState is Bundle) {
+            happinessState = viewState.getLong("happinessState", HAPPINESS_STATE_HAPPY)
+            viewState = viewState.getParcelable("superState")!!
+        }
+        super.onRestoreInstanceState(viewState)
     }
 
     companion object {
