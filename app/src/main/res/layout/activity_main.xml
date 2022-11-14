@@ -15,7 +15,28 @@
         tools:ignore="HardcodedText" />
 
     <com.vlatrof.customviewdemo.EmotionalFaceView
+        app:faceColor="@color/black"
+        app:eyesColor="@color/white"
+        app:mouthColor="@color/white"
+        app:borderColor="@color/purple_200"
+        app:borderWidth="5dp"
+        app:happinessState="happy"
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+
+    <Button
+        android:id="@+id/btn_make_happy"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="make happy"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btn_make_sad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="make sad"
+        tools:ignore="HardcodedText" />
+
 
 </LinearLayout>
